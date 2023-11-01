@@ -2,11 +2,6 @@ from random import randint, getrandbits
 import hashlib
 
 
-def hash256(s):
-    '''Two rounds of sha256.'''
-    return hashlib.sha256(hashlib.sha256(s).digest()).digest()
-
-
 class EllipticCurve:
     def __init__(self, a, b, p, G, n):
         # Varibles a, b of the curve equation y^2 = x^3 + ax + b
@@ -88,10 +83,13 @@ class ECDSA:
 
     def verify(self, r, s, z, P):
         s_inverse = pow(s, self.curve.n - 2, self.curve.n)
-        u = z * s_inverse % self.curve.n  # u = z/s
-        v = r * s_inverse % self.curve.n  # v = r/s
+        # `u` = z/s
+        u = z * s_inverse % self.curve.n
+        # `v` = r/s
+        v = r * s_inverse % self.curve.n
+        # `total` = uG + uP
         total = self.curve.add_points(self.curve.scalar_multiply_point(u, self.curve.G),
-                        self.curve.scalar_multiply_point(v, P))  # uG + vP
+                                      self.curve.scalar_multiply_point(v, P))
 
         return (total[0] == r)
 
