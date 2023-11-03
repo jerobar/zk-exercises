@@ -31,9 +31,9 @@ matrix = [1234, 5678, 9101,
           453, 6565, 9874794, 
           793973, 22, 38768] # nxn uint256 matrix
 s = [G1, G1, G1] # multiplied by 1xn matrix of ec points
-o = [1234 + 453 + 793973, 
-     5678 + 6565 + 22, 
-     9101 + 9874794 + 38768] # equals 1xn uint256 matrix
+o = [1234 + 453 + 793973, # 795660
+     5678 + 6565 + 22, # 12265
+     9101 + 9874794 + 38768] # 9922663  equals 1xn uint256 matrix
 # [nxn uint256][1xn ec_points] = [1xn uint256] (homomorphism -> ec)
 
 def verify(matrix, n, s, o):
