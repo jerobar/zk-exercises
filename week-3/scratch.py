@@ -9,7 +9,11 @@ num = 12
 denom = 2
 
 a_hidden = multiply(G1, a)
+print('a',a_hidden)
 b_hidden = multiply(G1, b)
+print('b',b_hidden)
+print('inv',pow(2, -1, curve_order))
+print('co', curve_order)
 
 print(
   eq(
@@ -22,7 +26,6 @@ print(
 # Matrix multiplication of an nxn of uint256 and 1xn of points
 # Validate that claim that matrix Ms = o where o is a 1xn matrix
 # of uint256, s is an 1xn matrix of EC points
-
 n = 3
 matrix = [1234, 5678, 9101, 
           453, 6565, 9874794, 
@@ -55,3 +58,5 @@ def verify(matrix, n, s, o):
 
 
 verify(matrix, n, s, o)
+print(curve_order)
+print(hex(curve_order).zfill(64))
