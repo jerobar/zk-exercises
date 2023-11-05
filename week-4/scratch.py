@@ -1,4 +1,4 @@
-from py_ecc.bn128 import multiply, G1, G2
+from py_ecc.bn128 import multiply, add, G1, G2
 
 # Scalars
 x1 = 13
@@ -39,6 +39,10 @@ print("Delta_2:\n", Delta_2)
 
 print(multiply(G1, x1 + x2 + x3))
 
+print(
+    multiply(G1, x1 + x2 + x3) == 
+    add(add(multiply(G1, x1), multiply(G1, x2)), multiply(G1, x3))
+)
 
 # from py_ecc.bn128 import G1, G2, neg, pairing, add, multiply, eq
 

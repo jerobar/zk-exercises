@@ -61,19 +61,6 @@ contract Prover {
             ]
         );
 
-    function addPoints(
-        G1Point memory A,
-        G1Point memory B
-    ) public view returns (G1Point memory) {
-        (bool success, bytes memory result) = address(6).staticcall(
-            abi.encode(A.x, A.y, B.x, B.y)
-        );
-        require(success, "Prover: point addition failed.");
-
-        (uint256 x, uint256 y) = abi.decode(result, (uint256, uint256));
-        return G1Point(x, y);
-    }
-
     function scalarMultiplyPoint(
         G1Point memory P,
         uint256 s
@@ -107,42 +94,40 @@ contract Prover {
         uint256 x3
     ) public view returns (bool) {
         // Compute X1 = x1G1 + x2G1 + x3G1
-        G1Point memory X1 = addPoints(
-            addPoints(scalarMultiplyPoint(G1, x1), scalarMultiplyPoint(G1, x2)),
-            scalarMultiplyPoint(G1, x3)
-        );
+        G1Point memory X1 = scalarMultiplyPoint(G1, x1 + x2 + x3);
 
         // Verify the equality 0 = -A₁B₂ + α₁β₂ + X₁γ₂ + C₁δ₂
         G1Point memory neg_A1 = negatePoint(A1);
-        uint256[] memory input = new uint256[](24);
-        // -A₁B₂
-        input[0] = neg_A1.x;
-        input[1] = neg_A1.y;
-        input[2] = B2.x[0];
-        input[3] = B2.x[1];
-        input[4] = B2.y[0];
-        input[5] = B2.y[1];
-        // α₁β₂
-        input[6] = Alpha_1.x;
-        input[7] = Alpha_1.y;
-        input[8] = Beta_2.x[0];
-        input[9] = Beta_2.x[1];
-        input[10] = Beta_2.y[0];
-        input[11] = Beta_2.y[1];
-        // X₁γ₂
-        input[12] = X1.x;
-        input[13] = X1.y;
-        input[14] = Gamma_2.x[0];
-        input[15] = Gamma_2.x[1];
-        input[16] = Gamma_2.y[0];
-        input[17] = Gamma_2.y[1];
-        // C₁δ₂
-        input[18] = C1.x;
-        input[19] = C1.y;
-        input[20] = Detla_2.x[0];
-        input[21] = Detla_2.x[1];
-        input[22] = Detla_2.y[0];
-        input[23] = Detla_2.y[1];
+        uint256[24] memory input = [
+            // -A₁B₂
+            neg_A1.x,
+            neg_A1.y,
+            B2.x[0],
+            B2.x[1],
+            B2.y[0],
+            B2.y[1],
+            // α₁β₂
+            Alpha_1.x,
+            Alpha_1.y,
+            Beta_2.x[0],
+            Beta_2.x[1],
+            Beta_2.y[0],
+            Beta_2.y[1],
+            // X₁γ₂
+            X1.x,
+            X1.y,
+            Gamma_2.x[0],
+            Gamma_2.x[1],
+            Gamma_2.y[0],
+            Gamma_2.y[1],
+            // C₁δ₂
+            C1.x,
+            C1.y,
+            Detla_2.x[0],
+            Detla_2.x[1],
+            Detla_2.y[0],
+            Detla_2.y[1]
+        ];
 
         assembly {
             let success := staticcall(gas(), 8, add(input, 0x20), mul(24, 0x20), input, 0x20)
