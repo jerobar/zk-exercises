@@ -5,38 +5,38 @@ pragma solidity 0.8.22;
 contract Prover {
     uint256 constant CURVE_ORDER =
         0x30644e72e131a029b85045b68181585d2833e84879b9709143e1f593f0000001;
-
+    
     struct ECPoint {
         uint256 x;
         uint256 y;
     }
-
+    
     ECPoint G1 = ECPoint(1, 2);
 
     function addPoints(
         ECPoint memory A,
         ECPoint memory B
-    ) public view returns (ECPoint memory C) {
+    ) public view returns (ECPoint memory) {
         (bool success, bytes memory result) = address(6).staticcall(
             abi.encode(A.x, A.y, B.x, B.y)
         );
         require(success, "Prover: point addition failed.");
 
         (uint256 x, uint256 y) = abi.decode(result, (uint256, uint256));
-        C = ECPoint(x, y);
+        return ECPoint(x, y);
     }
 
     function scalarMultiplyPoint(
         ECPoint memory P,
         uint256 s
-    ) public view returns (ECPoint memory R) {
+    ) public view returns (ECPoint memory) {
         (bool success, bytes memory result) = address(7).staticcall(
             abi.encode(P.x, P.y, s)
         );
         require(success, "Prover: point scalar multiplication failed.");
 
         (uint256 x, uint256 y) = abi.decode(result, (uint256, uint256));
-        R = ECPoint(x, y);
+        return ECPoint(x, y);
     }
 
     function rationalAdd(
@@ -70,7 +70,7 @@ contract Prover {
         for (uint256 i = 0; i < n; i++) {
             ECPoint memory result;
 
-            // Calculate the element
+            // Calculate the element (result)
             for (uint256 j = 0; j < n; j++) {
                 if (j == 0) {
                     result = scalarMultiplyPoint(s[j], matrix[j * n + i]);
@@ -82,10 +82,10 @@ contract Prover {
                 }
             }
 
-            // Check each calculated element against its counterpart in o
+            // Check the result against its counterpart in o
             ECPoint memory O = scalarMultiplyPoint(G1, o[i]);
 
-            // If a calculated element doesn't match its counterpart, return false
+            // If a result doesn't match its counterpart, return false
             if (O.x != result.x || O.y != result.y) {
                 return false;
             }

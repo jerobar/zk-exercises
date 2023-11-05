@@ -69,7 +69,7 @@ class ECDSA:
     def sign(self, e, m):
         # `k` is a random number between 0 and the curve order
         k = randint(0, self.curve.n)
-        k_inverse = pow(k, self.curve.n - 2, self.curve.n)
+        k_inverse = pow(k, self.curve.n - 2, self.curve.n) # pow(k, -1, self.curve.n)
         # `R` is the point k * G
         R = self.curve.scalar_multiply_point(k, self.curve.G)
         # `r` is the x coordinate of R
