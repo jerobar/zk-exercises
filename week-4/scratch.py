@@ -37,7 +37,7 @@ print("Beta_2:\n", Beta_2)
 print("Gamma_2:\n", Gamma_2)
 print("Delta_2:\n", Delta_2)
 
-
+print(multiply(G1, x1 + x2 + x3))
 
 
 # from py_ecc.bn128 import G1, G2, neg, pairing, add, multiply, eq
