@@ -103,31 +103,31 @@ contract Prover {
             // -A₁B₂
             neg_A1.x,
             neg_A1.y,
-            B2.x[0],
             B2.x[1],
-            B2.y[0],
+            B2.x[0],
             B2.y[1],
+            B2.y[0],
             // α₁β₂
             Alpha_1.x,
             Alpha_1.y,
-            Beta_2.x[0],
             Beta_2.x[1],
-            Beta_2.y[0],
+            Beta_2.x[0],
             Beta_2.y[1],
+            Beta_2.y[0],
             // X₁γ₂
             X1.x,
             X1.y,
-            Gamma_2.x[0],
             Gamma_2.x[1],
-            Gamma_2.y[0],
+            Gamma_2.x[0],
             Gamma_2.y[1],
+            Gamma_2.y[0],
             // C₁δ₂
             C1.x,
             C1.y,
-            Detla_2.x[0],
             Detla_2.x[1],
-            Detla_2.y[0],
-            Detla_2.y[1]
+            Detla_2.x[0],
+            Detla_2.y[1],
+            Detla_2.y[0]
         ];
         assembly {
             let success := staticcall(gas(), 8, add(input, 0x20), mul(24, 0x20), input, 0x20)
