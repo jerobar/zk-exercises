@@ -3,7 +3,7 @@
 pragma solidity 0.8.22;
 
 contract Prover {
-    uint256 constant CURVE_ORDER =
+    uint256 constant G1_CURVE_ORDER =
         0x30644e72e131a029b85045b68181585d2833e84879b9709143e1f593f0000001;
 
     struct G1Point {
@@ -12,11 +12,11 @@ contract Prover {
     }
 
     struct G2Point {
-        uint256[2] x;
-        uint256[2] y;
+        uint256[2] x; // [x1, x2]
+        uint256[2] y; // [y1, y2]
     }
 
-    // G1
+    // G₁
     G1Point G1 = G1Point(1, 2);
     // A₁
     G1Point Alpha_1 =
@@ -77,11 +77,12 @@ contract Prover {
     function negatePoint(
         G1Point memory P
     ) public pure returns (G1Point memory) {
+		// If point at infinity
         if (P.x == 0 && P.y == 0) {
             return G1Point(0, 0);
         } else {
             // Additive inverse of P (reflected over x-axis)
-            return G1Point(P.x, CURVE_ORDER - (P.y % CURVE_ORDER));
+            return G1Point(P.x, G1_CURVE_ORDER - (P.y % G1_CURVE_ORDER));
         }
     }
 
@@ -93,7 +94,7 @@ contract Prover {
         uint256 x2,
         uint256 x3
     ) public view returns (bool) {
-        // Compute X1 = x1G1 + x2G1 + x3G1
+        // Compute X₁ = x₁G₁ + x₂G₁ + x₃G₁
         G1Point memory X1 = scalarMultiplyPoint(G1, x1 + x2 + x3);
 
         // Verify the equality 0 = -A₁B₂ + α₁β₂ + X₁γ₂ + C₁δ₂
@@ -128,7 +129,6 @@ contract Prover {
             Detla_2.y[0],
             Detla_2.y[1]
         ];
-
         assembly {
             let success := staticcall(gas(), 8, add(input, 0x20), mul(24, 0x20), input, 0x20)
             if success {
