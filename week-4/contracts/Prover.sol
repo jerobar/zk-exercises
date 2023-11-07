@@ -203,14 +203,16 @@ contract Prover {
         console.log("Delta2.y2", input[22]);
         console.log("Delta2.y1", input[23]);
 
+        bool success = false;
+
         assembly {
-            let success := staticcall(gas(), 8, input, mul(24, 0x20), input, 0x20)
+            success := staticcall(gas(), 8, input, mul(24, 0x20), input, 0x20)
             if success { return(input, 0x20) }
         }
 
-        return false;
+        console.log("staticcall success:", success);
 
-        // bool success = false;
+        return false;
 
         // assembly {
         //     success := staticcall(gas(), 8, input, mul(24, 0x20), input, 0x20)
@@ -218,8 +220,6 @@ contract Prover {
         //         return(input, 0x20)
         //     }
         // }
-
-        // console.log("success:", success);
 
         // return false;
     }
