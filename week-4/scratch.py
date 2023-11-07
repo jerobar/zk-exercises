@@ -1,8 +1,8 @@
 from py_ecc.bn128 import neg, multiply, add, G1, G2
 
-print("A1:", multiply(G1, 5))
-print("B2:", multiply(G2, 6))
-print("C1:", multiply(G1, 2))
+print("Jung A1:", multiply(G1, 5))
+print("Jung B2:", multiply(G2, 6))
+print("Jung C1:", multiply(G1, 2))
 
 # Scalars
 x1 = 13
