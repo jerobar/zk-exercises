@@ -1,17 +1,20 @@
 from py_ecc.bn128 import neg, multiply, add, G1, G2
 
 # Define scalars
-a_1 = 5
-b_2 = 6
-alpha_1 = 2
-beta_2 = 3
-x1 = 1
-x2 = 1
-x3 = 1
+a_1 = 69
+b_2 = 420
+
+alpha_1 = 42
+beta_2 = 33
+
+x1 = 13
+x2 = 29
+x3 = 18
 x_1 = x1 + x2 + x3
-gamma_2 = 4
-c_1 = 2
-delta_2 = 6
+gamma_2 = 128
+
+c_1 = 6
+delta_2 = 3319
 
 # Sanity check scalar values
 print("Scalars sum to 0:", (-a_1*b_2) + (alpha_1*beta_2) + (x_1*gamma_2) + (c_1*delta_2) == 0, "\n")
