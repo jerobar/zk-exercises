@@ -1,4 +1,8 @@
-from py_ecc.bn128 import multiply, add, G1, G2
+from py_ecc.bn128 import neg, multiply, add, G1, G2
+
+print("A1:", multiply(G1, 5))
+print("B2:", multiply(G2, 6))
+print("C1:", multiply(G1, 2))
 
 # Scalars
 x1 = 13
@@ -18,13 +22,16 @@ c_1 = 109
 delta_2 = 208
 
 # Sanity check
-print("Scalars sum to 0:", -a_1*b_2 + alpha_1*beta_2 + x_1*gamma_2 + c_1*delta_2 == 0)
+# print(multiply(G1, 60))
+print("Scalars sum to 0:", (-a_1*b_2) + (alpha_1*beta_2) + (x_1*gamma_2) + (c_1*delta_2) == 0)
 
 # Elliptic curve points
 A1 = multiply(G1, a_1) # negated in Solidity contract
 B2 = multiply(G2, b_2)
 C1 = multiply(G1, c_1)
+print("X1", multiply(G1, x1+x2+x3))
 print("A1:\n", A1)
+print("neg_a1:", neg(A1))
 print("B2:\n", B2)
 print("C1:\n", C1)
 
