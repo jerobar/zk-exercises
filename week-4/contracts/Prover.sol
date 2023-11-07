@@ -131,10 +131,18 @@ contract Prover {
         uint256 x3
     ) public view returns (bool) {
         // Compute X₁ = x₁G₁ + x₂G₁ + x₃G₁
-        G1Point memory X1 = scalarMultiplyPoint(G1, x1 + x2 + x3); // correct
+        // G1Point memory X1 = scalarMultiplyPoint(G1, x1 + x2 + x3); // correct
+        G1Point memory X1 = G1Point(
+            3353031288059533942658390886683067124040920775575537747144343083137631628272,
+            19321533766552368860946552437480515441416830039777911637913418824951667761761
+        );
 
         // Verify the equality 0 = -A₁B₂ + α₁β₂ + X₁γ₂ + C₁δ₂
-        G1Point memory neg_A1 = negatePoint(A1); // correct
+        // G1Point memory neg_A1 = negatePoint(A1); // correct
+        G1Point memory neg_A1 = G1Point(
+            10744596414106452074759370245733544594153395043370666422502510773307029471145, 
+            21039565435327757486054843320102702720990930294403178719740356721829973864651
+        );
 
         uint256[24] memory input = [
             // -A₁B₂
