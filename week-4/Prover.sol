@@ -130,7 +130,7 @@ contract Prover {
             Detla_2.y[0]
         ];
         assembly {
-            let success := staticcall(gas(), 8, add(input, 0x20), mul(24, 0x20), input, 0x20)
+            let success := staticcall(gas(), 8, input, mul(24, 0x20), input, 0x20)
             if success {
                 return(input, 0x20)
             }
